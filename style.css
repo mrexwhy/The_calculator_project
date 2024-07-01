@@ -1,6 +1,15 @@
 #container {
-    border: 3px solid black;
+    border: 8px solid black;
     width: 50vh;
     text-align: center;
     margin: 0 auto;
+    background-color: gray;
+}
+
+#screen {
+    border: 5px solid black;
+    height: 40px;
+    text-align: right;
+    font-size: 40px;
+    background-color: aliceblue;
 }
