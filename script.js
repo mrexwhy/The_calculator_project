@@ -1,3 +1,4 @@
+// Below fuctions takes two numbers and calculates their results according to their functions.
 const addition = function (a, b) {
     return a + b;
 };
@@ -17,16 +18,20 @@ const division = function (a, b) {
     return a / b;
 };
 
+// Below variables will store the respective numbers and operators to perform the calculations.
 let firstNumber;
 let operator;
 let secondNumber;
 
+
 function operate () {
 let result;
 [firstNumber, operator, secondNumber] = displayArray;
+// This line stores values assigned to the three variables.
 
 let num1 = Number(firstNumber);
 let num2 = Number(secondNumber);
+// Converts string values to numbers.
 
     switch(operator) {
         case '+':
@@ -49,6 +54,7 @@ let num2 = Number(secondNumber);
     } else {
         return result.toFixed(2);
     }
+    // Return the result rounded to 2 decimal places if its not an integer.
 }
 
 const numberButtons = document.querySelectorAll('button.number');
@@ -57,15 +63,18 @@ const allClear = document.getElementById('clear');
 const equalKey = document.getElementById('equal-key');
 const negativeKey = document.getElementById('negative-key');
 const screenDiv = document.getElementById('screen');
+// Select buttons and other elements by their id's and classes.
 
 let displayValue = '';
 screenDiv.textContent = '0';
 let displayArray = [];
+// Initialise displayValue and displayArray, and set the screen to display 0.
 
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
         displayValue += button.textContent;
         displayArray = displayValue.match(/(?<!\d)-?\d+(\.\d+)?|[+\-*/]/g);
+        // Regex to recognise and seperate operators and numbers in the displayArray.
         
         [firstNumber, operator, secondNumber] = displayArray;
         
@@ -80,6 +89,7 @@ numberButtons.forEach(button => {
             }
     })
 });
+// Assign event to number buttons and distribute the values to displayValue and displayArray accordingly.
 
 operatorButtons.forEach(button => {
     button.addEventListener('click', () => {
@@ -97,14 +107,16 @@ operatorButtons.forEach(button => {
        }
     })
 });
+// Assign event and functions to operator Buttons.
 
 allClear.addEventListener('click', () => {
     screenDiv.textContent = '0';
     displayValue = '';
     displayArray = displayValue;
 });
+// This event clears the screen when clicked.
 
-let isEqualClicked = false;
+let isEqualClicked = false; // Checks if the equal button is clicked.
 equalKey.addEventListener('click', () => {
     if (!isEqualClicked) {
         displayValue = operate();
@@ -119,6 +131,7 @@ equalKey.addEventListener('click', () => {
         isEqualClicked = true;
     }
 });
+// When prompted, this is when the calculation is executed.
 
 negativeKey.addEventListener('click', () => {
     displayValue = displayValue.toString();
@@ -142,6 +155,7 @@ negativeKey.addEventListener('click', () => {
         screenDiv.textContent = currentValue;
     }
 });
+// This event assigns negative signs to numbers.
 
 const decimal = document.getElementById('decimal');
 decimal.addEventListener('click', () => {
@@ -156,6 +170,7 @@ decimal.addEventListener('click', () => {
         }
     }
 });
+// This event assigns the decimal point in numbers.
 
 const percentageButton = document.getElementById('percentage');
 percentageButton.addEventListener('click', () => {
@@ -172,6 +187,7 @@ percentageButton.addEventListener('click', () => {
         }
     }
 });
+// Calculates the percentage equation when prompted.
 
 function handleKeyDown(event) {
     if (event.key >= '0' && event.key <= '9') {
@@ -191,3 +207,4 @@ function handleKeyDown(event) {
     }
 }
 document.addEventListener('keydown', handleKeyDown);
+// Keyboard press events are assined to the displayValue and displayArray.
