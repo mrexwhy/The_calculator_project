@@ -70,13 +70,21 @@ screenDiv.textContent = '0';
 let displayArray = [];
 // Initialise displayValue and displayArray, and set the screen to display 0.
 
+let isEqualClicked = false; // Checks if the equal button is clicked.
+
 numberButtons.forEach(button => {
     button.addEventListener('click', () => {
+        if (isEqualClicked) {
+            displayValue = ''; // Reset calculation if '=' was clicked
+            isEqualClicked = false; // Reset the flag
+        }
+        
         displayValue += button.textContent;
         displayArray = displayValue.match(/(?<!\d)-?\d+(\.\d+)?|[+\-*/]/g);
         // Regex to recognise and seperate operators and numbers in the displayArray.
         
         [firstNumber, operator, secondNumber] = displayArray;
+        
         
         if (displayArray.length === 3) {
                 screenDiv.textContent = secondNumber;
@@ -86,7 +94,7 @@ numberButtons.forEach(button => {
         
         if (firstNumber === '0') {
                 displayValue = '';
-            }
+            } 
     })
 });
 // Assign event to number buttons and distribute the values to displayValue and displayArray accordingly.
@@ -101,34 +109,46 @@ operatorButtons.forEach(button => {
     if (displayArray.length === 3) {
         displayValue = operate();
         screenDiv.textContent = displayValue;
-        displayValue += button.textContent;
+        displayValue += '' + button.textContent + '';
+    } else if (displayValue === '' || displayValue === '0') {
+        return;
     } else {
         displayValue += '' + button.textContent + '';
-       }
+    }
     })
 });
 // Assign event and functions to operator Buttons.
 
 allClear.addEventListener('click', () => {
-    screenDiv.textContent = '0';
     displayValue = '';
-    displayArray = displayValue;
+    displayArray = [];
+    screenDiv.textContent = '0';
+    firstNumber = displayValue;
 });
 // This event clears the screen when clicked.
 
-let isEqualClicked = false; // Checks if the equal button is clicked.
 equalKey.addEventListener('click', () => {
-    if (!isEqualClicked) {
-        displayValue = operate();
-        displayArray = [Number(displayValue)];
-        screenDiv.textContent = displayValue;
-
-        if (displayValue === 'Invalid Operation') {
-            screenDiv.textContent = '0';
-            displayValue = '';
+    if (displayArray.length === 3) {
+        if (!isEqualClicked) {
+            displayValue = operate();
+            displayArray = [Number(displayValue)];
+            screenDiv.textContent = displayValue;
+            if (displayValue === 'Invalid Operation') {
+                screenDiv.textContent = '0';
+                displayValue = '';
+            }
+    
+            isEqualClicked = true;
         }
+    }
 
-        isEqualClicked = true;
+    if (displayValue.includes('=')) { // Check if '=' is in displayValue
+        screenDiv.textContent = displayValue.replace('=', ''); // Remove '=' from displayValue
+        displayValue = screenDiv.textContent;
+    }
+
+    if (displayValue === '0') {
+        screenDiv.textContent = '0';
     }
 });
 // When prompted, this is when the calculation is executed.
@@ -154,11 +174,20 @@ negativeKey.addEventListener('click', () => {
         displayArray = displayValue.match(/-?\d+(\.\d+)?|[+\-*/]/g);
         screenDiv.textContent = currentValue;
     }
+
+    if (displayValue === '0') {
+        screenDiv.textContent = '0';
+    }
 });
 // This event assigns negative signs to numbers.
 
 const decimal = document.getElementById('decimal');
 decimal.addEventListener('click', () => {
+    if (isEqualClicked) {
+        displayValue = '0'; // Reset calculation if '=' was clicked
+        isEqualClicked = false; // Reset the flag
+    }
+
     const parts = displayValue.split(/[\+\-\*\/]/);
     const currentPart = parts[parts.length - 1];
 
@@ -185,6 +214,10 @@ percentageButton.addEventListener('click', () => {
             displayValue = firstNumber.toString();;
             screenDiv.textContent = firstNumber.toFixed(3);
         }
+    }
+
+    if (displayArray === '0') {
+        screenDiv.textContent = '0';
     }
 });
 // Calculates the percentage equation when prompted.
