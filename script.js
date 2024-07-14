@@ -85,7 +85,6 @@ numberButtons.forEach(button => {
         
         [firstNumber, operator, secondNumber] = displayArray;
         
-        
         if (displayArray.length === 3) {
                 screenDiv.textContent = secondNumber;
             } else {
